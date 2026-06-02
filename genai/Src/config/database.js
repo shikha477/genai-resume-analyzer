@@ -8,5 +8,6 @@ async function connectToDB(){
     catch(err){
         console.log(err)
     }
+    // console.log("MONGO_URI =", process.env.MONGO_URI);
 }
 module.exports = connectToDB
