@@ -31,7 +31,7 @@ const mongoose = require('mongoose');
  * }]
  */
 
-const technicalQuestion = new mongoose.Schema({
+const technicalQuestionSchema = new mongoose.Schema({
     question :{
         type:String,
         required:[true, "Technical question is required "]
@@ -81,7 +81,7 @@ const skillGapSchema = new mongoose.Schema({
 const preparationPlanSchema = new mongoose.Schema({
     day:{
         type:Number,
-        reyuired:[true,"Day is required"]
+        required:[true,"Day is required"]
     },
     focus:{
         
@@ -96,7 +96,7 @@ const preparationPlanSchema = new mongoose.Schema({
 })
 
 const interviewReportSchema = new mongoose.Schema({
-    jonDescription :{
+    jobDescription :{
         type:String,
         required:[true,"job description is required"]
     },
@@ -112,9 +112,9 @@ const interviewReportSchema = new mongoose.Schema({
         min:0,
         max:100,
     },
-    technicalQuestion:[technicalQuestionSchema],
-    behavioralQuestion:[ behavioralQuestionSchema],
-    skillGap:[skillGapSchema],
+    technicalQuestions:[technicalQuestionSchema],
+    behavioralQuestions:[ behavioralQuestionSchema],
+    skillGaps:[skillGapSchema],
     preparationPlan:[preparationPlanSchema]
 },{
     timestamps:true
@@ -123,4 +123,4 @@ const interviewReportSchema = new mongoose.Schema({
 
 const interviewReportModel = mongoose.model("interviewReport",interviewReportSchema);
 
-module.export = interviewReportModel
+module.exports = interviewReportModel
