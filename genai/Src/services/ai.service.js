@@ -76,7 +76,8 @@ async function generateInterviewReport({resume,SelfDescription,jobDescription}){
     responseMimeType: "application/json",
     responseSchema: zodToJsonSchema(interviewReportSchema)
   }
-})
+ })
+ 
   return JSON.parse(response.text)
     
 
