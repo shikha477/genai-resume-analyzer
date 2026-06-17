@@ -37,7 +37,7 @@ const interviewReportSchema = z.object({
     })).describe("A day-wise preparatio plan for the candidate to follow in order to prepare for the interview effectively  "),
 }).strict()
 
-async function generateInterviewReport({resume,SelfDescription,jobDescription}){
+async function generateInterviewReport({resume,selfDescription,jobDescription}){
 
 
     // const prompt = `Generate an interview report for a condidate with the following details:
@@ -63,7 +63,7 @@ async function generateInterviewReport({resume,SelfDescription,jobDescription}){
  ${resume}
 
  Self Description:
- ${SelfDescription}
+ ${selfDescription}
 
  Job Description:
  ${jobDescription}

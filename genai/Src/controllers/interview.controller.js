@@ -14,6 +14,11 @@ async function generateInterviewReportController(req,res){
     })
     const transformedReport = {
     ...interViewReportByAi,
+     matchScore: Number(
+        String(interViewReportByAi.matchScore || 0)
+            .replace("%", "")
+            .trim()
+    ),
 
     technicalQuestions:
         (interViewReportByAi.technicalQuestions || [])
@@ -69,6 +74,9 @@ async function generateInterviewReportController(req,res){
  // console.log(
  //   JSON.stringify(interViewReportByAi, null, 2)
  // )
+ console.log("AI RESPONSE =>", interViewReportByAi)
+ console.log("MATCH SCORE =>", interViewReportByAi.matchScore)
+ console.log("TYPE =>", typeof interViewReportByAi.matchScore)
 
  console.log(
   "AI RESPONSE:",
