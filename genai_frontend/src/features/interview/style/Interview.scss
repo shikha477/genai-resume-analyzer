@@ -199,7 +199,7 @@
   padding: 1rem;
 
   border-top: 1px solid
-    rgba(255, 255, 255, 0.08);
+    rgba(43, 21, 121, 0.08);
 }
 
 .question-body h4 {
@@ -289,4 +289,25 @@
   border-radius: 999px;
 
   font-size: 0.75rem;
+}
+.roadmap-focus {
+  color: #ff2b8a;
+  font-size: .9rem;
+  margin-bottom: .3rem;
+}
+
+.roadmap-title {
+  color: white;
+  font-size: .9rem;
+}
+
+.roadmap-tasks {
+  margin-top: 1rem;
+  padding-left: 1rem;
+
+  li {
+    color: #9eb0c9;
+    line-height: 1.8;
+    margin-bottom: .8rem;
+  }
 }
