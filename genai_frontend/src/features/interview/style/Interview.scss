@@ -190,9 +190,31 @@
   font-size: 0.75rem;
 }
 
+// .expand-icon {
+//   color: #7f8ea5;
+//   font-size: 1.2rem;
+// }
 .expand-icon {
-  color: #7f8ea5;
-  font-size: 1.2rem;
+  width: 36px;
+  height: 36px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 50%;
+
+  color: #8ea0b8;
+
+  font-size: 22px;
+
+  transition: transform .3s ease;
+
+  flex-shrink: 0;
+}
+
+.expand-icon.open {
+  transform: rotate(180deg);
 }
 
 .question-body {
