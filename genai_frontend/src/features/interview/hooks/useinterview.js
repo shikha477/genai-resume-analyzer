@@ -1,52 +1,58 @@
-import { getAllInterviewReports, generateinterviewReport, getInterviewReportById } from "../services/interview.api"; 
+import { getAllInterviewReports, generateInterviewReport, getInterviewReportById } from "../services/interview.api"; 
 import {useContext} from "react"
 import { InterviewContext } from "../interview.context";
 
 export const useInterview =()=>{
-    const context = use(InterviewContext)
+    const context = useContext(InterviewContext)
 
     if(!context){
         throw new Error("useInterview must be used within an InterviewProvider")
     }
-    const {loading, setloading,report, setReport,setReports}= context
+    const {loading, setLoading,report,reports, setReport,setReports}= context
 
-    const generteReport = async ({jobDescription, selfDescription, resumeFile}) =>{
-        setloading(true)
+    const generateReport = async ({jobDescription, selfDescription, resumeFile}) =>{
+        setLoading(true)
+        let response= null
         try{
-            const response = await generateInterviewReport({jobDescription, selfDescription, resumeFile})
+             response = await generateInterviewReport({jobDescription, selfDescription, resumeFile})
             setReport(response.interviewReport)
         }catch(error){
             console.error("Error generating interview report:",error)
         }finally{
-            setloading(false)
+            setLoading(false)
         }
+        return response.interviewReport
     }
 
     const getReportById = async (interviewId)=>{
-        setloading(true)
+        setLoading(true)
+        let response=null
         try{
-            const reponse = await getInterviewReportById(interviewId)
+            response = await getInterviewReportById(interviewId)
             setReport(response.interviewReport)
         }catch(error){
             console.log(error)
         }finally{
-            setloading(false)
+            setLoading(false)
         }
+        return response.interviewReport
     }
-}
+
 
 const getReports = async ()=>{
-    setloading(true)
+    setLoading(true)
+    let response = null
     try{
-        const response = await getAllInterviewReports()
+         response = await getAllInterviewReports()
         setReports(response.interviewReports)
     }catch(error){
         console.log(error)
     }finally{
         setLoading(false)
     }
-
-    return {
+    return response.interviewReports
+}
+return {
         loading, report, reports, generateReport, getReportById, getReports
     }
 }

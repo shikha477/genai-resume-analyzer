@@ -59,7 +59,8 @@ async function generateInterviewReport({resume,selfDescription,jobDescription}){
   technicalQuestions,
   behavioralQuestions,
   skillGaps,
-  preparationPlan
+  preparationPlan,
+  title
 
  Resume:
  ${resume}
