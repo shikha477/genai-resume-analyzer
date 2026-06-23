@@ -116,7 +116,7 @@ async function generateInterviewReportController(req,res){
 /**
  * @description Controller to get interview report by interviewId.
  */
-async function getInterviewReportByTdController(req,res){
+async function getInterviewReportByIdController(req,res){
     const {interviewId} = req.param
     const interviewReport = await interviewReportModel.findOne({_id: interviewId, user:req.user.id})
     if(!interviewReport){

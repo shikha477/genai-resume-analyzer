@@ -32,10 +32,24 @@
 // export default Home;
 
 
-import React from "react";
+import React,{useState, useRef} from "react";
 import "../style/home.scss";
+import { useInterview } from "../hooks/useinterview.js";
+import { useNavigate } from "react-router";
 
 const Home = () => {
+const {loading,generateReport}= useInterview()
+const [jobDescription, setJobDescription]=useState("")
+const [selfDescription, setSelfDescription]= useState("")
+const resumeInputRef = useRef()
+
+const navigate= useNavigate()
+
+const handleGenerateReport = async()=>{
+  const resumeFile = resumeInputRef.current.files[0]
+  await generateReport ({ jobDescription, selfDescription, resumeFile})
+}
+
   return (
     <main className="home">
       <div className="container">
@@ -68,6 +82,7 @@ const Home = () => {
             </div>
 
             <textarea
+              onChange={(e)=>{setJobDescription(e.target.value)}}
               name="jobDescription"
               id="jobDescription"
               placeholder={`Paste the full job description here...
@@ -118,7 +133,7 @@ e.g. 'Senior Frontend Engineer at Google requires proficiency in React, TypeScri
                 </span>
               </label>
 
-              <input
+              <input ref={resumeInputRef}
                 hidden
                 id="resume"
                 type="file"
@@ -137,6 +152,7 @@ e.g. 'Senior Frontend Engineer at Google requires proficiency in React, TypeScri
               </label>
 
               <textarea
+                onChange={(e)=>{setSelfDescription(e.target.value)}}
                 id="selfDescription"
                 placeholder="Briefly describe your experience, key skills, and years of experience if you don't have a resume handy..."
               />
