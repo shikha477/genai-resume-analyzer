@@ -50,14 +50,8 @@ async function generateInterviewReportController(req,res){
             severity: "medium"
         })),
 
-    // preparationPlan:
-    //     typeof interViewReportByAi.preparationPlan === "string"
-    //         ? [{
-    //             day: 1,
-    //             focus: "Interview Preparation",
-    //             tasks: [interViewReportByAi.preparationPlan]
-    //         }]
-    //         : interViewReportByAi.preparationPlan
+
+
 
     preparationPlan:
     typeof interViewReportByAi.preparationPlan === "string"
@@ -75,9 +69,8 @@ async function generateInterviewReportController(req,res){
         : []
  }
 
- // console.log(
- //   JSON.stringify(interViewReportByAi, null, 2)
- // )
+
+
  console.log("AI RESPONSE =>", interViewReportByAi)
  console.log("MATCH SCORE =>", interViewReportByAi.matchScore)
  console.log("TYPE =>", typeof interViewReportByAi.matchScore)
@@ -93,20 +86,14 @@ async function generateInterviewReportController(req,res){
  )
  const interviewReport = await interviewReportModel.create({
     title:jobDescription,
-    user:req.user._id,
+    user:req.user.id,
     resume:resumeContent.text,
     selfDescription,
     jobDescription,
     ...transformedReport
  })
-    // const interviewReport = await interviewReportModel.create({
-    //     user:req.user.id,
-    //     resume:resumeContent.text,
-    //     selfDescription,
-    //     jobDescription,
-    //     ...interViewReportByAi
 
-    // })
+
 
     res.status(201).json({
      message:"Interview report generated successfully",
@@ -118,17 +105,23 @@ async function generateInterviewReportController(req,res){
  * @description Controller to get interview report by interviewId.
  */
 async function getInterviewReportByIdController(req,res){
-    const {interviewId} = req.param
-    const interviewReport = await interviewReportModel.findOne({_id: interviewId, user:req.user.id})
-    if(!interviewReport){
+    const { interviewId } = req.params;
+
+   const interviewReport = await interviewReportModel.findOne({
+    _id: interviewId,
+    user: req.user.id
+ });
+
+    if (!interviewReport) {
         return res.status(404).json({
-            message:"Interview report not found."
-        })
+            message: "Interview report not found."
+        });
     }
+
     res.status(200).json({
-        message:"Interview report fetched successfully.",
+        message: "Interview report fetched successfully.",
         interviewReport
-    })
+    });
 }
 
 

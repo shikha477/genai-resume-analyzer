@@ -20,7 +20,7 @@ export const generateInterviewReport =async ({jobDescription, selfDescription, r
             "Content-Type":"multipart/form-data"
         }
     })
-    return response
+    return response.data
 
 }
 

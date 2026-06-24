@@ -1,9 +1,11 @@
 import { getAllInterviewReports, generateInterviewReport, getInterviewReportById } from "../services/interview.api"; 
-import {useContext} from "react"
+import {useContext,useEffect} from "react"
 import { InterviewContext } from "../interview.context";
+import {useParams} from "react-router"
 
 export const useInterview =()=>{
     const context = useContext(InterviewContext)
+    const {interviewId} = useParams()
 
     if(!context){
         throw new Error("useInterview must be used within an InterviewProvider")
@@ -15,13 +17,15 @@ export const useInterview =()=>{
         let response= null
         try{
              response = await generateInterviewReport({jobDescription, selfDescription, resumeFile})
+             console.log("response =", response)
             setReport(response.interviewReport)
         }catch(error){
             console.error("Error generating interview report:",error)
         }finally{
             setLoading(false)
         }
-        return response.interviewReport
+        if (!response) return null;
+        return response.interviewReport;
     }
 
     const getReportById = async (interviewId)=>{
@@ -35,7 +39,7 @@ export const useInterview =()=>{
         }finally{
             setLoading(false)
         }
-        return response.interviewReport
+        return response?.interviewReport
     }
 
 
@@ -50,8 +54,15 @@ const getReports = async ()=>{
     }finally{
         setLoading(false)
     }
-    return response.interviewReports
+    return response?.interviewReports
 }
+useEffect(()=>{
+    if(interviewId){
+        getReportById(interviewId)
+    }else{
+        getAllInterviewReports()
+    }
+},[interviewId])
 return {
         loading, report, reports, generateReport, getReportById, getReports
     }
