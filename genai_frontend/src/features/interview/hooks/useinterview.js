@@ -60,7 +60,7 @@ useEffect(()=>{
     if(interviewId){
         getReportById(interviewId)
     }else{
-        getAllInterviewReports()
+        getReports()
     }
 },[interviewId])
 return {

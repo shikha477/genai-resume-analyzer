@@ -1,6 +1,7 @@
 const {GoogleGenAI} = require("@google/genai")
 const {z} = require("zod")
 const {zodToJsonSchema} = require("zod-to-json-schema")
+const puppeteer = require("puppeteer")
 
 
 const ai = new GoogleGenAI({
@@ -41,12 +42,6 @@ const interviewReportSchema = z.object({
 
 async function generateInterviewReport({resume,selfDescription,jobDescription}){
 
-
-    // const prompt = `Generate an interview report for a condidate with the following details:
-    // Resume: ${resume}
-    // self Description: ${SelfDescription}
-    // job Description :${jobDescription}`
-
     const prompt = `
  Generate an interview report.
 
@@ -84,6 +79,44 @@ async function generateInterviewReport({resume,selfDescription,jobDescription}){
   return JSON.parse(response.text)
     
 
+}
+
+
+async function generatePdfFromHtml(htmlContent){
+    const browser = await puppeteer.launch()
+    const page = await browser.newPage();
+    awaitpage.setContent(htmlContent,{waitUntil:"networkidle0"})
+
+    const pdfBuffre = await page.pdf({format:"A4"})
+    await browser.close()
+
+    return pdfBuffer
+}
+
+
+async function generateResumePdf({resum,selfDescription,jobDescription}) {
+
+    const resumePdfSchema = z.object({
+        html:z.string().describe("The HTML content of the resume which can be converted to pdf using any library like puppeteer")
+    })
+    const prompt = `Generate  resume for a condidate with the following details:
+      Resume:${resume}
+      Self Description:${selfDescription}
+      job Description:${jobDescription}
+      the resume should be a JSON object with a single field "html" which contains the HTML content of the resume which can be converted to PDF using any library like puppeteer
+      `
+
+      const response = await ai.models.generateContent({
+        model:"gemini-3-flash-preview",
+        contents:prompt,
+        config:{
+            responseMimeType:'application/json',
+            responseSchema:zodToJsonSchema(interviewReportSchema),
+
+        }
+      })
+
+      const jsonContent = JSON.parse(response.text)
 }
 module.exports = generateInterviewReport 
 

@@ -128,12 +128,16 @@ async function getInterviewReportByIdController(req,res){
 /**
  * @description Controller to get all interview reports of logged in user.
  */
-async function getAllInterviewReportsController(req, res){
-    const interviewReports = (await interviewReportModel.find({user:req.user.id})).toSorted({created:-1}).select("-resume -selfDescription -jobDescription -__v -technicalQuestions -behavioralQuestions -skillGaps -preparationPlan")
-    res.status(200).json({
-        message:"Interview reports fetched successfully.",
-        interviewReports
-    })
+async function getAllInterviewReportsController(req, res) {
+  const interviewReports = await interviewReportModel
+    .find({ user: req.user.id })
+    .sort({ createdAt: -1 })   
+    .select("-resume -selfDescription -jobDescription -__v -technicalQuestions -behavioralQuestions -skillGaps -preparationPlan");
+
+  res.status(200).json({
+    message: "Interview reports fetched successfully.",
+    interviewReports,
+  });
 }
 
 
