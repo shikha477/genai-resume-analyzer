@@ -73,6 +73,8 @@ const Interview = () => {
             Road Map
           </button>
 
+          <div style={{ flex: 1 }} />
+
           <button
           onClick ={()=>{getResumePdf(interviewId)}}
            className="download-btn">

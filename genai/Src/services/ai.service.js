@@ -152,9 +152,13 @@ async function generateResumePdf({resume,selfDescription,jobDescription}) {
             responseSchema:zodToJsonSchema(resumePdfSchema),
 
         }
-      })
+      });
+      console.log("Gemini response:");
+      console.log(response.text);
 
       const jsonContent = JSON.parse(response.text)
+      console.log("HTML generated:");
+      console.log(jsonContent.html);
       const pdfBuffer = await generatePdfFromHtml(jsonContent.html)
       return pdfBuffer
 }

@@ -148,17 +148,25 @@ async function generateResumePdfController(req, res){
     const {interviewReportId}= req.params
     const interviewReport = await interviewReportModel.findById(interviewReportId)
 
+    console.log("Interview Report:");
+    console.log(interviewReport);
+
     if(!interviewReport){
         return res.status(404).json({
             message:"Interview report not found."
         })
     }
     const {resume, jobDescription, selfDescription} = interviewReport 
+
+    console.log("Resume:", resume);
+    console.log("Job Description:", jobDescription);
+    console.log("Self Description:", selfDescription);
+
     const pdfBuffer = await generateResumePdf({resume, jobDescription, selfDescription})
 
     res.set({
         "Content-Type":"application/pdf",
-        "Content-Disposition":`attachment:filename=resume_${interviewReportId}.pdf`
+        "Content-Disposition":`attachment;filename=resume_${interviewReportId}.pdf`
     })
     res.send(pdfBuffer)
 }
