@@ -97,7 +97,12 @@ async function generatePdfFromHtml(html) {
     });
 
     const pdfBuffer = await page.pdf({
-        format: "A4",
+        format: "A4",margin:{
+            top:"20mm",
+            bottom:"20mm",
+            left:"15mm",
+            right:"15mm",
+        },
         printBackground: true
     });
 
@@ -112,12 +117,32 @@ async function generateResumePdf({resume,selfDescription,jobDescription}) {
     const resumePdfSchema = z.object({
         html:z.string().describe("The HTML content of the resume which can be converted to pdf using any library like puppeteer")
     })
-    const prompt = `Generate  resume for a condidate with the following details:
-      Resume:${resume}
-      Self Description:${selfDescription}
-      job Description:${jobDescription}
-      the resume should be a JSON object with a single field "html" which contains the HTML content of the resume which can be converted to PDF using any library like puppeteer
-      `
+
+    const prompt = `
+ Generate a professional resume for a candidate with the following details.
+
+ Resume:
+ ${resume}
+
+ Self Description:
+ ${selfDescription}
+
+ Job Description:
+ ${jobDescription}
+
+ Requirements:
+ - Return ONLY a valid JSON object. 
+ - The JSON must contain exactly one field: "html".
+ - The "html" field should contain complete HTML that can be converted to PDF using Puppeteer.
+ - Tailor the resume according to the job description.
+ - Highlight the candidate's strengths and relevant experience.
+ - The content should sound natural and human-written.
+ - The design should be simple, clean, and professional.
+ - Use subtle colors and good typography.
+ - Make the resume easy to read and visually appealing.
+ -The content sould be ATS friendly, i.e. it should be easily parsable by ATS system without losing important information.
+ -The resume should not be too lengthy, it should be 1 pages long when converted to PDF. Focus on quality rather than quantity and make sure to include all the relevant information that can increase the candidate's chances of getting an interview call for the given job description.
+ `;
 
       const response = await ai.models.generateContent({
         model:"gemini-2.5-flash",
