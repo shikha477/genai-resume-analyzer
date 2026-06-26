@@ -153,13 +153,15 @@ async function generateResumePdf({resume,selfDescription,jobDescription}) {
 
         }
       });
-      console.log("Gemini response:");
-      console.log(response.text);
 
       const jsonContent = JSON.parse(response.text)
-      console.log("HTML generated:");
+      console.log("========== HTML ==========");
       console.log(jsonContent.html);
+
+       console.log("HTML LENGTH:", jsonContent.html?.length);
+
       const pdfBuffer = await generatePdfFromHtml(jsonContent.html)
+      console.log("PDF BUFFER SIZE:", pdfBuffer.length);
       return pdfBuffer
 }
 module.exports = {generateInterviewReport, generateResumePdf} 
