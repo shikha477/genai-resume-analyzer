@@ -20,7 +20,7 @@ const interviewReportSchema = z.object({
 
 
     behavioralQuestions:z.array(z.object({
-        question : z.string().describe("The technical question can be asked in the interview"),
+        question : z.string().describe("The behavoiral question can be asked in the interview"),
         intention:z.string().describe("The intention of interviewer behind asking this question"),
         answer:z.string().describe("How to answer this question, what points to cover, what approach to take etc.")
 
@@ -68,17 +68,45 @@ async function generateInterviewReport({resume,selfDescription,jobDescription}){
  `;
 
    const response = await ai.models.generateContent({
-     model: "gemini-2.5-flash",
-     contents: prompt,
-     config: {
+  model: "gemini-2.5-flash",
+  contents: prompt,
+  config: {
     responseMimeType: "application/json",
     responseSchema: zodToJsonSchema(interviewReportSchema)
   }
- })
- 
-  return JSON.parse(response.text)
-    
+})
 
+const data = JSON.parse(response.text);
+
+console.log("========== FULL AI RESPONSE ==========");
+console.dir(data, { depth: null });
+
+console.log(
+  "technicalQuestions type:",
+  typeof data.technicalQuestions
+);
+
+console.log("technicalQuestions value:");
+console.dir(data.technicalQuestions, { depth: null });
+
+console.log(
+  "behavioralQuestions type:",
+  typeof data.behavioralQuestions
+);
+
+console.log("behavioralQuestions value:");
+console.dir(data.behavioralQuestions, { depth: null });
+
+console.log(
+  "skillGaps type:",
+  typeof data.skillGaps
+);
+
+console.log("skillGaps value:");
+console.dir(data.skillGaps, { depth: null });
+
+return data;
+    
 }
 
 
@@ -158,10 +186,9 @@ async function generateResumePdf({resume,selfDescription,jobDescription}) {
       console.log("========== HTML ==========");
       console.log(jsonContent.html);
 
-       console.log("HTML LENGTH:", jsonContent.html?.length);
+     console.log("HTML LENGTH:", jsonContent.html?.length);
 
       const pdfBuffer = await generatePdfFromHtml(jsonContent.html)
-      console.log("PDF BUFFER SIZE:", pdfBuffer.length);
       return pdfBuffer
 }
 module.exports = {generateInterviewReport, generateResumePdf} 
